@@ -13,12 +13,10 @@ import java.util.concurrent.TimeUnit;
 public class Main {
   public static void main(String[] argv) throws ParserConfigurationException, IOException, SAXException {
 
-    File xmlFile = new File("shakespeare.2.00.xml");
-
-
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
 
+    File xmlFile = new File("shaks200/hamlet.xml");
     Document document = builder.parse(xmlFile);
 
     document.getDocumentElement().normalize();
