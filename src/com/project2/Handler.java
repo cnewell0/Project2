@@ -24,7 +24,8 @@ public class Handler {
     Element root = document.getDocumentElement();
     personaNumber(root);
     speakerActs(root);
-    fragmentSearching(root, reader);
+    Node[] lineNode = fragmentSearching(root, reader);
+    fragmentReplace(reader, lineNode);
 
   }
 
@@ -85,7 +86,7 @@ public class Handler {
    * @param root gets the root of the document to access other elements
    *             *        in the xml file
    */
-  public static void fragmentSearching(Element root, Scanner reader) {
+  public static Node[] fragmentSearching(Element root, Scanner reader) {
     System.out.println("What fragment do you want to search for?");
     String sentanceFragment = reader.nextLine();
     if (sentanceFragment == "")
@@ -119,18 +120,29 @@ public class Handler {
                 + lineNode[j].getTextContent() + " ");
       }
       System.out.println("Search performed in " + ((clockEnd - clockStart) / 1000000000.0) + " seconds");
-      System.out.println("Do you want to replace it? (Y/N");
-    }
-  }
-
-  public static void fragmentReplace(Element root, Scanner reader) {
-    //char answer = reader.next();
-    //if (answer == 'Y'){
-
+      System.out.println("Do you want to replace it? (Y/N)");
     }
 
+    return lineNode;
+  }
+
+  public static void fragmentReplace(Scanner reader, Node[] lineNode) {
+    String answer = reader.next();
+    char value = answer.charAt(0);
+    if (value == 'Y') {
+      System.out.println("Enter in a new sentane to replace it: ");
+      String newSentance = reader.nextLine();
+      System.out.println("Enter the line number that you wanna replace");
+      int lineNumber = reader.nextInt();
+      lineNode[lineNumber].setTextContent(newSentance);
+
+      System.out.println("The sentence has been replaced as follows: \n" + lineNode[lineNumber - 1].getTextContent());
+      System.out.println("Do you want to save the changes? (Y/N)");
+
+    }
+
 
   }
 
-
+}
 
