@@ -11,6 +11,17 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
+
+  /**
+   * This main function opens the xml file and calls the handler function
+   * to deal with the parsing of the file
+   *
+   * @param argv used for user input
+   * @throws ParserConfigurationException catches errors within Document
+   *                                      builder methods
+   * @throws IOException                  catches errors within Document builder methods
+   * @throws SAXException                 catches errors within Document builder methods
+   */
   public static void main(String[] argv) throws ParserConfigurationException, IOException, SAXException {
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

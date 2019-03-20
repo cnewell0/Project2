@@ -5,6 +5,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
 import java.util.Scanner;
@@ -12,9 +15,12 @@ import java.util.concurrent.TimeUnit;
 
 public class Handler {
 
+  private String filename;
+  private Document document;
+
   /**
-   * This function sets the variable root to the first ellement in the
-   * xml file and then calls the other methods in the Handler class
+   * This function sets the variable root to the first element in the
+   * xml file and then calls the other methods that deal with parsing
    *
    * @param document is used to pass the xml document from the main class
    *                 to the handler class to parse the document
@@ -34,11 +40,10 @@ public class Handler {
    * there are in the play
    *
    * @param root gets the root of the document to access other elements
-   *             *             in the xml file
+   *             in the xml file
    */
   public static void personaNumber(Element root) {
 
-    //Finding amount of persona
     NodeList nList = root.getElementsByTagName("PERSONA");
     int numPersona = nList.getLength();
 
@@ -52,13 +57,14 @@ public class Handler {
    *
    * @param root gets the root of the document to access other elements
    *             in the xml file
+   *
    */
   public static void speakerActs(Element root) {
 
-    //findidng how much hamlet is in there
     System.out.println("Enter a speaker to see how many times they speak");
     Scanner reader = new Scanner(System.in);
     String person = reader.nextLine();
+    String uPerson = person.toUpperCase();
 
     NodeList personList = root.getElementsByTagName("SPEAKER");
 
@@ -68,7 +74,7 @@ public class Handler {
     for (int i = 0; i < personList.getLength(); i++) {
 
       speakerElement = (Element) personList.item(i);
-      if (person.equals(speakerElement.getTextContent()))
+      if (uPerson.equals(speakerElement.getTextContent()))
         count++;
 
     }
@@ -84,7 +90,8 @@ public class Handler {
    * fragment
    *
    * @param root gets the root of the document to access other elements
-   *             *        in the xml file
+   *             in the xml file
+   * @param reader is used to take input from user, derived from Scanner class
    */
   public static Node[] fragmentSearching(Element root, Scanner reader) {
     System.out.println("What fragment do you want to search for?");
@@ -112,37 +119,72 @@ public class Handler {
     long clockEnd = System.nanoTime();
     if (!isFound) {
       System.out.println("Sorry, fragment not found. Search performed in " + ((clockEnd - clockStart) / 1000000000.0) + " seconds");
+      System.exit(0);
     }
 
     if (isFound == true) {
       for (int j = 0; j < count; j++) {
-        System.out.println("The fragment has been found in the following sentence: "
+        System.out.println(count);
+        System.out.println("The fragment has been found in the following sentence: \n"
                 + lineNode[j].getTextContent() + " ");
       }
+      //int lineNumber = (int) document.getUserData("LineNumber");
       System.out.println("Search performed in " + ((clockEnd - clockStart) / 1000000000.0) + " seconds");
       System.out.println("Do you want to replace it? (Y/N)");
     }
-
     return lineNode;
   }
 
+  /**
+   * This function replaces the the sentence fragment that was found in the
+   * previous function with a String that the user can enter
+   *
+   * @param reader   is used to take input from user, derived from Scanner class
+   * @param lineNode is passed from the previous function to hold the line
+   *                 that was taken from the xml file
+   */
   public static void fragmentReplace(Scanner reader, Node[] lineNode) {
     String answer = reader.next();
     char value = answer.charAt(0);
     if (value == 'Y') {
       System.out.println("Enter in a new sentane to replace it: ");
-      String newSentance = reader.nextLine();
-      System.out.println("Enter the line number that you wanna replace");
-      int lineNumber = reader.nextInt();
-      lineNode[lineNumber].setTextContent(newSentance);
+      String newSentance = reader.next();
+      //System.out.println("Enter the line number that you wanna replace");
+      //int lineNumber = reader.nextInt();
+      lineNode[0].setTextContent(newSentance);
 
-      System.out.println("The sentence has been replaced as follows: \n" + lineNode[lineNumber - 1].getTextContent());
+      for (int i = 0; i < 6; i++)
+        System.out.println("The sentence has been replaced as follows: \n" + lineNode[0].getTextContent());
       System.out.println("Do you want to save the changes? (Y/N)");
 
     }
-
-
   }
 
+  /**
+   * Saves the XML tree as a new XML file
+   * Will overwrite the original file if it has the same name as this.filename
+   *
+   * @param newFilename name of new XML file
+   * @return true if success, false if failure
+   */
+  public boolean saveFile(String newFilename) {
+    boolean success = true;
+
+    try {
+      Transformer transformer = TransformerFactory.newInstance().newTransformer();
+      Result output = new StreamResult(new File(newFilename));
+      Source input = new DOMSource(this.document);
+
+      transformer.transform(input, output);
+    } catch (TransformerException e) {
+      e.printStackTrace();
+      success = false;
+    }
+    if (success) {
+      this.filename = newFilename;
+    }
+    return success;
+
+  }
 }
 
