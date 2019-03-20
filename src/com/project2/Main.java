@@ -38,7 +38,7 @@ public class Main {
     if (filename.equals("")) {
       filename = "shaks200/hamlet.xml";
     }
-    Document document = builder.parse(filename);
+    document = builder.parse(filename);
 
     document.getDocumentElement().normalize();
 
@@ -80,19 +80,23 @@ public class Main {
     return success;
   }
 
+  /**
+   * This function is used for entering a new name for the
+   * xml file, if same name is entered it overrides it
+   *
+   * @param reader is used to take input from user, derived from Scanner class
+   */
   public static void overwriteFile(Scanner reader) {
     System.out.println("Enter the name of the file you would like to save it as");
-    filename = reader.nextLine();
-    if (filename.equals("Shakespeare/hamlet.xml")) {
+    String newFilename = reader.nextLine();
+    if (newFilename.equals("shaks200/hamlet.xml")) {
       System.out.println("Do you want to overwrite the file hamlet.xml? (Y/N)");
       String answer = reader.nextLine();
-      if (answer.equals("Y") || answer.equals("y")) {
-        saveFile(filename);
-      }
-    } else
-      saveFile(filename);
+      if (answer.equals("Y") || answer.equals("y"))
+        saveFile(newFilename);
+    }
+    saveFile(newFilename);
   }
 }
-
 
 

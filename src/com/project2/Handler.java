@@ -81,7 +81,7 @@ public class Handler {
         count++;
 
     }
-    System.out.println(person + " speaks: " + count + "times");
+    System.out.println(person + " speaks: " + count + "times\n");
   }
 
 
@@ -128,8 +128,8 @@ public class Handler {
 
     if (isFound) {
       for (int j = 0; j < count; j++) {
-        System.out.println("The fragment has been found in the following sentence: \n"
-                + lineNode[j].getTextContent() + " ");
+        System.out.println("The fragment has been found in the following sentence: \n\n"
+                + lineNode[j].getTextContent() + " \n");
       }
       System.out.println("Search performed in " + ((clockEnd - clockStart) / 1000000000.0) + " seconds");
       System.out.println("Do you want to replace it? (Y/N)");
@@ -152,7 +152,7 @@ public class Handler {
    */
   public static void fragmentReplace(Scanner reader, Node[] lineNode) {
 
-    System.out.println("Enter number of the line you want to replace");
+    System.out.println("Enter the number of the line you want to replace");
     int lineNumber = reader.nextInt();
     reader.nextLine();
     System.out.println("Enter the new fragment");
@@ -160,8 +160,8 @@ public class Handler {
     String newSentence = lineNode[lineNumber - 1].getTextContent().replace(sentenceFragment, replacement);
 
     lineNode[lineNumber - 1].setTextContent(newSentence);
-    System.out.println("The sentence has been replaced as follows:\n" +
-            lineNode[lineNumber - 1].getTextContent() + "\nDo you want to save changes? (Y/N)");
+    System.out.println("The sentence has been replaced as follows:\n\n" +
+            lineNode[lineNumber - 1].getTextContent() + "\n\nDo you want to save changes? (Y/N)");
     String answer = reader.nextLine();
     if ((answer.equals("N")) || (answer.equals("n"))) {
       System.exit(0);
