@@ -100,8 +100,9 @@ public class Handler {
   public static Node[] fragmentSearching(Element root, Scanner reader) {
     System.out.println("What fragment do you want to search for?");
     sentenceFragment = reader.nextLine();
-    if (sentenceFragment.equals("")) ;
-    sentenceFragment = "To be, or not to be";
+    if (sentenceFragment.equals("")) {
+      sentenceFragment = "To be, or not to be";
+    }
 
     NodeList fragList = root.getElementsByTagName("LINE");
     Node[] lineNode = new Node[fragList.getLength()];

@@ -44,9 +44,7 @@ public class Main {
 
     Handler.handleChannelTag(document);
     overwriteFile(reader);
-
   }
-
 
   /**
    * Saves the XML tree as a new XML file
@@ -55,7 +53,6 @@ public class Main {
    * @param newFilename name of new XML file
    * @return true if success, false if failure
    */
-
   public static boolean saveFile(String newFilename) {
     boolean success = true;
 
@@ -71,7 +68,6 @@ public class Main {
       success = false;
     }
 
-    // Change the current filename if Save As... works properly
     if (success) {
       filename = newFilename;
       System.out.println("File saved successfully\n");
