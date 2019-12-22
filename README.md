@@ -1,2 +1,2 @@
-# Shakepeare play parser (Java)
+# Shakepeare play parser
 JavaParser
